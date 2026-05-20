@@ -98,7 +98,7 @@ public class PixelDrawName {
         timeline.play();
 
         ImageView imageView = new ImageView(canvas);
-        Main.root.getChildren().add(imageView);
+        Main.rootMenu.getChildren().add(imageView);
     }
 
     public static void drawPixel(int x, int y) {

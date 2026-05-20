@@ -3,6 +3,7 @@ package university.ua.embroideryproject;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 // 685 width for canvas
@@ -15,7 +16,7 @@ public class EmbroideryCanvas {
     private static int startY;
 
     public static void drawEmbroideryCanvas() {
-        Main.root2.getChildren().remove(imageView);
+        Main.rootMain.getChildren().remove(imageView);
         startX = (1290 - Main.COLS * Main.CELL_SIZE) / 2;
         startY = (820 - Main.ROWS * Main.CELL_SIZE) / 2;
 
@@ -28,7 +29,7 @@ public class EmbroideryCanvas {
             }
         }
         imageView.setImage(writableImage);
-        Main.root2.getChildren().add(imageView);
+        Main.rootMain.getChildren().add(imageView);
     }
 
     private static void drawGrid(int x, int y, int s, Color color) {
@@ -51,7 +52,26 @@ public class EmbroideryCanvas {
             drawGrid(startX+placeInMatrixColumn*Main.CELL_SIZE, startY+placeInMatrixRow*Main.CELL_SIZE, Main.CELL_SIZE, color);
 
         }
-
-
     }
+
+    public static void mouseHandle(){
+        imageView.setPickOnBounds(true);
+        imageView.toBack();
+        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            double x = e.getX();
+            double y = e.getY();
+            EmbroideryCanvas.drawOnCanvas(x, y, Main.colorForEmbroidery.getValue());
+        } );
+
+        EmbroideryCanvas.imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+            double x = e.getX();
+            double y = e.getY();
+            EmbroideryCanvas.drawOnCanvas(x, y, Main.colorForEmbroidery.getValue());
+        } );
+    }
+
+
+
+
+
 }
