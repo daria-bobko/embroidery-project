@@ -20,6 +20,7 @@ public class MainScene {
     public static TextField inputColumns;
     public static  TextField inputRows;
     public static Button duplicate;
+    public static Button loadPicture;
     public static void mainSceneProperties(Stage stage, Group root2) {
 
         returnToMenuButton(stage, root2);
@@ -33,6 +34,7 @@ public class MainScene {
         horizontalSymetricCheckBox(root2);
         verticalSymetricCheckBox(root2);
         duplicatePatternButton(root2);
+        loadPictureButton(root2);
 
 
         Utils.toggleButtonAction(pencil, eraser, fillBackground);
@@ -41,6 +43,18 @@ public class MainScene {
 
 
     }
+
+    private static void loadPictureButton(Group root2) {
+        loadPicture = new Button("LOAD");
+        loadPicture.setPrefSize(280, 61);
+        loadPicture.setLayoutX(1006);
+        loadPicture.setLayoutY(200);
+        buttonStyle(loadPicture, root2);
+        loadPicture.setOnAction(
+                (l) -> WorkWithPictures.loadPNG()
+        );
+    }
+
 
     private static void duplicatePatternButton(Group root2) {
         duplicate = new Button("дублювати шаблон");
@@ -161,6 +175,12 @@ public class MainScene {
         savePicture.setLayoutX(1006);
         savePicture.setLayoutY(100);
         buttonStyle(savePicture, root2);
+
+        savePicture.setOnAction(
+                (s) -> WorkWithPictures.saveAsPNG()
+        );
+
+
 
     }
 
