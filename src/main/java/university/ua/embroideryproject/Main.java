@@ -15,7 +15,7 @@ public static int ROWS = 30;
 public static int COLS = 30;
 public static int CELL_SIZE = 23;
 public static ColorPicker colorForEmbroidery;
-public static int grid[][] = new int [ROWS][COLS];
+public static Color [][]grid = new Color [ROWS][COLS];
 public static Scene menuScene;
 public static Scene mainScene;
 
@@ -36,6 +36,5 @@ public static void main(String[] args) {
         stage.show();
 
         EmbroideryCanvas.mouseHandle();
-
 }
 }
