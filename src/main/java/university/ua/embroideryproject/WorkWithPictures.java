@@ -19,7 +19,7 @@ public class WorkWithPictures {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Зберегти вишивку як малюнок");
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("PNG файли (*.png)", "*.png")
+                new FileChooser.ExtensionFilter("(*.png)", "*.png")
         );
 
         File file = fileChooser.showSaveDialog(null);
@@ -27,9 +27,9 @@ public class WorkWithPictures {
         if (file != null) {
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(EmbroideryCanvas.writableImage, null), "png", file);
-                System.out.println("Вишивку успішно збережено в PNG!");
+                System.out.println("вишивку збережено");
             } catch (Exception ex) {
-                System.err.println("Помилка при збереженні: " + ex.getMessage());
+                System.err.println("помилка: " + ex.getMessage());
             }
         }
     }
