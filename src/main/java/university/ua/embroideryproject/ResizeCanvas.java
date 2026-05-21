@@ -2,63 +2,72 @@ package university.ua.embroideryproject;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ResizeCanvas {
 public static Stage sizeStage;
 public static GridPane gridPaneSize;
     public static void resize(){
+        sizeStage = new Stage();
         VBox changeSizeBox = new VBox();
 
+        ButtonBar buttonBar = new ButtonBar();
+        buttonBar.setPadding( new Insets(10) );
         gridPaneSize = new GridPane();
-        gridPaneSize.setPadding( new Insets(10, 0, 0, 0) );
-        gridPaneSize.setHgap( 4 );
-        gridPaneSize.setVgap( 10 );
+        gridPaneSize.setPadding(new Insets(20, 20, 20, 20));
+        gridPaneSize.setHgap(15);
+        gridPaneSize.setVgap(15);
 
-        VBox.setVgrow(gridPaneSize, Priority.ALWAYS );
+        VBox.setVgrow(gridPaneSize, Priority.ALWAYS);
 
-        Label width = new Label("width (1-200) :");
-        TextField inputColumns = new TextField("30");
-        Label height = new Label("height (1-200) :");
-        TextField inputRows = new TextField("30");
+        MainScene.inputColumns.setMaxWidth(60);
+        MainScene.inputRows.setMaxWidth(60);
 
-        gridPaneSize.add(width, 0, 1);
-        gridPaneSize.add(inputColumns, 2, 1);
-        gridPaneSize.add(height, 0, 3);
-        gridPaneSize.add(inputRows, 2, 3);
+        gridPaneSize.add(MainScene.width, 0, 0);
+        gridPaneSize.add(MainScene.inputColumns, 1, 0);
+        gridPaneSize.add(MainScene.height, 0, 1);
+        gridPaneSize.add(MainScene.inputRows, 1, 1);
 
-        GridPane.setColumnSpan(width, 1);
-        GridPane.setColumnSpan(inputColumns, 4);
-        GridPane.setColumnSpan(height, 1);
-        GridPane.setColumnSpan(inputRows, 4);
+        GridPane.setColumnSpan(buttonBar, 2);
+        gridPaneSize.add(buttonBar, 0, 3);
+
+        GridPane.setHalignment(buttonBar, javafx.geometry.HPos.RIGHT);
 
         changeSizeBox.getChildren().add(gridPaneSize);
 
-        sizeStage = new Stage();
 
         Scene sceneForResize = new Scene(changeSizeBox);
 
         sizeStage.setTitle("Новий розмір полотна");
         sizeStage.setScene(sceneForResize);
-        sizeStage.setWidth( 400 );
+        sizeStage.setWidth( 350 );
         sizeStage.setHeight( 200  );
-
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.setPadding( new Insets(10) );
 
         Button saveButton = new Button("Зберегти");
         saveButton.setOnAction(
                 (s) -> {
-                    Main.ROWS = Integer.parseInt(inputRows.getText());
-                    Main.COLS = Integer.parseInt(inputColumns.getText());
-                    Main.grid = new int[Main.ROWS][Main.COLS];
+                    while(MainScene.inputRows.getText().contains(".")|| MainScene.inputRows.getText().contains(",")||
+                            MainScene.inputColumns.getText().contains(".")|| MainScene.inputColumns.getText().contains(",")||
+                            !(Integer.parseInt(MainScene.inputColumns.getText()) > 0) ||
+                                    !(Integer.parseInt(MainScene.inputColumns.getText()) <= 100) ||
+                                    !(Integer.parseInt(MainScene.inputRows.getText()) > 0) ||
+                                    !(Integer.parseInt(MainScene.inputRows.getText()) <= 100) ||
+                                    MainScene.inputColumns.getText().isEmpty() || MainScene.inputRows.getText().isEmpty()){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Помилка");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Введіть коректні дані (цілі числа від 1 до 100)");
+                        alert.showAndWait();
+                        return;
+                        }
+                    Main.ROWS = Integer.parseInt(MainScene.inputRows.getText());
+                    Main.COLS = Integer.parseInt(MainScene.inputColumns.getText());
+                    Main.grid = new Color[Main.ROWS][Main.COLS];
                     int sizeByWidth = 690 / Main.COLS;
                     int sizeByHeight = 750 / Main.ROWS;
                     Main.CELL_SIZE = Math.min(sizeByWidth, sizeByHeight);
@@ -77,7 +86,7 @@ public static GridPane gridPaneSize;
         buttonBar.setButtonData(cancelButton, ButtonBar.ButtonData.CANCEL_CLOSE);
 
         buttonBar.getButtons().addAll(saveButton, cancelButton);
-        gridPaneSize.add(buttonBar, 7, 6);
+        sizeStage.show();
 
     }
 
