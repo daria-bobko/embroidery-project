@@ -15,19 +15,29 @@ public class EmbroideryCanvas {
     private static int startX;
     private static int startY;
     private static Color background;
+    public static double screenStartX;
+    public static double screenStartY;
 
     public static void drawEmbroideryCanvas() {
         Main.rootMain.getChildren().remove(imageView);
-        startX = (1290 - Main.COLS * Main.CELL_SIZE) / 2;
-        startY = (820 - Main.ROWS * Main.CELL_SIZE) / 2;
+        int canvasWidth = Main.COLS * Main.CELL_SIZE;
+        int canvasHeight = Main.ROWS * Main.CELL_SIZE;
 
-        writableImage = new WritableImage(1300, 900);
+        startX = 0;
+        startY = 0;
+
+        writableImage = new WritableImage(canvasWidth, canvasHeight);
         writer = writableImage.getPixelWriter();
 
         fillAllCanvas(Color.WHITE);
+        screenStartX = (1290 - canvasWidth)/2.0;
+        screenStartY = (820 - canvasHeight)/2.0;
+        imageView.setX(screenStartX);
+        imageView.setY(screenStartY);
         imageView.setImage(writableImage);
         Main.rootMain.getChildren().add(imageView);
-    }
+}
+
 
     private static void drawCell(int x, int y, int s, Color color) {
         for (int i = 0; i < s; i++) {
@@ -41,9 +51,9 @@ public class EmbroideryCanvas {
     }
 
     public static void drawOnCanvas(double x, double y, Color color) {
-        if (x <= startX + (Main.CELL_SIZE * Main.COLS) && x>= startX && y <= startY + (Main.CELL_SIZE * Main.ROWS) && y >= startY) {
-            int placeInMatrixColumn = (int) (x - startX) / Main.CELL_SIZE;
-            int placeInMatrixRow = (int) (y - startY) / Main.CELL_SIZE;
+        if (x <= screenStartX + (Main.CELL_SIZE * Main.COLS) && x>= screenStartX && y <= screenStartY + (Main.CELL_SIZE * Main.ROWS) && y >= screenStartY) {
+            int placeInMatrixColumn = (int) (x - screenStartX) / Main.CELL_SIZE;
+            int placeInMatrixRow = (int) (y - screenStartY) / Main.CELL_SIZE;
             Color colorSaveValue = color.equals(Color.WHITE) ? null : color;
             Main.grid[placeInMatrixRow][placeInMatrixColumn] = colorSaveValue;
             drawCell(startX + placeInMatrixColumn * Main.CELL_SIZE, startY + placeInMatrixRow * Main.CELL_SIZE, Main.CELL_SIZE, color);
@@ -168,4 +178,35 @@ public class EmbroideryCanvas {
         }
 
     }}
+
+public static void printDownLoadPicture(){
+    Main.rootMain.getChildren().remove(imageView);
+    writableImage = new WritableImage(1300, 900);
+    writer = EmbroideryCanvas.writableImage.getPixelWriter();
+    imageView.setImage(EmbroideryCanvas.writableImage);
+
+    int canvasWidth = Main.COLS * Main.CELL_SIZE;
+    int canvasHeight = Main.ROWS * Main.CELL_SIZE;
+
+    startX = 0;
+    startY = 0;
+
+    for (int row = 0; row < Main.ROWS; row++) {
+        for (int col = 0; col < Main.COLS; col++) {
+            Color cellColor = Main.grid[row][col];
+            if (cellColor == null) {
+                cellColor = Color.WHITE;
+            }
+            drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, cellColor);
+        }
+    }
+    screenStartX = (1290 - canvasWidth)/2.0;
+    screenStartY = (820 - canvasHeight)/2.0;
+    imageView.setX(screenStartX);
+    imageView.setY(screenStartY);
+    imageView.setImage(writableImage);
+    Main.rootMain.getChildren().add(imageView);
+    imageView.toBack();
+
+}
 }
