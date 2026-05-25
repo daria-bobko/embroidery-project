@@ -1,5 +1,6 @@
 package university.ua.embroideryproject;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -12,6 +13,11 @@ import javafx.stage.Stage;
 public class ResizeCanvas {
 public static Stage sizeStage;
 public static GridPane gridPaneSize;
+public static Label width;
+public static Label height;
+public static TextField inputColumns;
+public static TextField inputRows;
+
     public static void resize(){
         sizeStage = new Stage();
         VBox changeSizeBox = new VBox();
@@ -25,18 +31,19 @@ public static GridPane gridPaneSize;
 
         VBox.setVgrow(gridPaneSize, Priority.ALWAYS);
 
-        MainScene.inputColumns.setMaxWidth(60);
-        MainScene.inputRows.setMaxWidth(60);
+        inputColumns.setMaxWidth(60);
+        inputRows.setMaxWidth(60);
 
-        gridPaneSize.add(MainScene.width, 0, 0);
-        gridPaneSize.add(MainScene.inputColumns, 1, 0);
-        gridPaneSize.add(MainScene.height, 0, 1);
-        gridPaneSize.add(MainScene.inputRows, 1, 1);
+        gridPaneSize.add(width, 0, 0);
+        gridPaneSize.add(inputColumns, 1, 0);
+        gridPaneSize.add(height, 0, 1);
+        gridPaneSize.add(inputRows, 1, 1);
+        gridPaneSize.add(new Label("Після зміни ваш старий малюнок буде втрачено!"), 0,2);
 
         GridPane.setColumnSpan(buttonBar, 2);
         gridPaneSize.add(buttonBar, 0, 3);
 
-        GridPane.setHalignment(buttonBar, javafx.geometry.HPos.RIGHT);
+        GridPane.setHalignment(buttonBar, HPos.RIGHT);
 
         changeSizeBox.getChildren().add(gridPaneSize);
 
@@ -45,19 +52,19 @@ public static GridPane gridPaneSize;
 
         sizeStage.setTitle("Новий розмір полотна");
         sizeStage.setScene(sceneForResize);
-        sizeStage.setWidth( 350 );
-        sizeStage.setHeight( 200  );
+        sizeStage.setWidth( 400);
+        sizeStage.setHeight( 220);
 
         Button saveButton = new Button("Зберегти");
         saveButton.setOnAction(
                 (s) -> {
-                    while(MainScene.inputRows.getText().contains(".")|| MainScene.inputRows.getText().contains(",")||
-                            MainScene.inputColumns.getText().contains(".")|| MainScene.inputColumns.getText().contains(",")||
-                            !(Integer.parseInt(MainScene.inputColumns.getText()) > 0) ||
-                                    !(Integer.parseInt(MainScene.inputColumns.getText()) <= 100) ||
-                                    !(Integer.parseInt(MainScene.inputRows.getText()) > 0) ||
-                                    !(Integer.parseInt(MainScene.inputRows.getText()) <= 100) ||
-                                    MainScene.inputColumns.getText().isEmpty() || MainScene.inputRows.getText().isEmpty()){
+                    while(inputRows.getText().contains(".")|| inputRows.getText().contains(",")||
+                            inputColumns.getText().contains(".")|| inputColumns.getText().contains(",")||
+                            !(Integer.parseInt(inputColumns.getText()) > 0) ||
+                                    !(Integer.parseInt(inputColumns.getText()) <= 100) ||
+                                    !(Integer.parseInt(inputRows.getText()) > 0) ||
+                                    !(Integer.parseInt(inputRows.getText()) <= 100) ||
+                                    inputColumns.getText().isEmpty() || inputRows.getText().isEmpty()){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Помилка");
                         alert.setHeaderText(null);
@@ -65,8 +72,8 @@ public static GridPane gridPaneSize;
                         alert.showAndWait();
                         return;
                         }
-                    Main.ROWS = Integer.parseInt(MainScene.inputRows.getText());
-                    Main.COLS = Integer.parseInt(MainScene.inputColumns.getText());
+                    Main.ROWS = Integer.parseInt(inputRows.getText());
+                    Main.COLS = Integer.parseInt(inputColumns.getText());
                     Main.grid = new Color[Main.ROWS][Main.COLS];
                     int sizeByWidth = 690 / Main.COLS;
                     int sizeByHeight = 750 / Main.ROWS;
