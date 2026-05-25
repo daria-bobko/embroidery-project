@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embroidery helper</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5efe2;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 60px 20px;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1.5px solid rgba(181, 35, 2, 0.25);
+            pointer-events: none;
+            z-index: 100;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+        }
+        .header-decor {
+            font-size: 28px;
+            color: #ca2b08;
+            margin-bottom: 15px;
+            opacity: 0.85;
+        }
+        .main-title {
+            font-size: 44px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 22px;
+            color: #6a0000;
+            margin-top: 5px;
+        }
+        .content-card {
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 50px 45px;
+            box-shadow: 0 12px 30px rgba(140, 120, 100, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 40px;
+        }
+        .content-card h2 {
+            font-family: 'Georgia', serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #961900;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 3px solid #ca2b08;
+            padding-left: 12px;
+        }
+        .content-card p + h2 {
+            margin-top: 30px;
+        }
+        .content-card h2 {
+            margin-top: 0;
+        }
+        .content-card h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        .content-card p {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .blockquote {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: #555555;
+            background-color: rgba(202, 43, 8, 0.04);
+            border-left: 3px solid #ca2b08;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .content-card ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .content-card li {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 8px;
+            list-style-type: square;
+            color: #ca2b08;
+        }
+        .content-card li span {
+            color: #333333;
+        }
+        .media-block {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .media-image {
+            flex: 0 0 200px;
+        }
+
+        .media-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .media-text {
+            flex: 1;
+        }
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777777;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(181, 35, 2, 0.15);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 15px;
+            }
+            body::before {
+                top: 10px; left: 10px; right: 10px; bottom: 10px;
+            }
+            .main-title {
+                font-size: 32px;
+                letter-spacing: 4px;
+            }
+            .content-card {
+                padding: 30px 20px;
+            }
+            .media-block {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .media-image {
+                flex: 0 0 auto;
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-decor">
+            <img src ="vishyvanka.png" alt="Вишивка" width="300" height="150">
+        </div>
+        <h1 class="main-title">EMBROIDERY MAKER</h1>
+        <div class="subtitle">довідник про символи української вишивки</div>
+    </header>
+
+    <main class="content-card">
+        <h2>Символіка в українській вишивці</h2>
+        <p>Історія вишиванки, як національного одягу, сягає корінням углиб століть.
+            Впродовж них вишивані на сорочках орнаменти та їх символіка вбирали та поєднували художні елементи різних культур, але при цьому зберегли свою самобутність.</p>
+
+        <div class="blockquote">
+            «Вишивка — це не просто прикраса одягу, це мова символів та оберіг, що передавався з покоління в покоління».
+        </div>
+
+        <h3>Всі орнаменти розділяють на декілька видів:</h3>
+        <ul>
+            <li><span><strong>Геометричні орнаменти</strong> — лінії, ромби, трикутники, хрести та інші фігури.</span></li>
+            <li><span><strong>Рослинні орнаменти</strong> — квіти, листя, гілки, дерева.</span></li>
+            <li><span><strong>Тваринні орнаменти</strong> — зображення різних тварин, птахів, риб або їх окремих елементів – очей, рогів, кігтів.</span></li>
+        </ul>
+
+        <p>Така різноманітність орнаментів з’явилася неспроста, оскільки візерунки на одязі виконували не лише декоративну функцію, а ще й містичну, адже вишиванки відігравали роль оберега.</p>
+        <p>Тут зібрані основні види орнаментів, що зустрічаються в сучасній вишивці та подане їх значення.</p>
+        <div class="media-block">
+        <div class="media-image">
+            <img src="flower.png" alt="Дерево життя">
+        </div>
+
+        <div class="media-text">
+            <h2>Дерево життя</h2>
+            <p>Краса, молодість, оновлення душі і тіла, безсмертя, відродження, родючість.</p>
+        </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="heart.png" alt="Серце">
+    </div>
+    <div class="media-text">
+        <h2>Серце</h2>
+        <p>Символ, який вишивався переважно на весільних сукнях для щасливого сімейного життя.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="stars.png" alt="Зорі">
+    </div>
+    <div class="media-text">
+        <h2>Зорі</h2>
+        <p>Складені у форму Алатир - зв'язок людини з космосом, оберіг від зла та негативу, захищає від хвороб та безсилля.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="shevroni.png" alt="Шеврони">
+    </div>
+    <div class="media-text">
+        <h2>Шеврони</h2>
+        <p>Обергуті вершиною вниз - жіноча, матеріальна сутність, обернуті вершиною вгору - чоловіча, духовна сутність.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="wavelines.png" alt="Хвилясті лінії">
+    </div>
+    <div class="media-text">
+        <h2>Хвилясті лінії</h2>
+        <p>Вода, дощ, плинність часу та еволюція Всесвіту.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="stars.png" alt="Хрест">
+    </div>
+    <div class="media-text">
+        <h2>Хрест</h2>
+        <p>Оберіг від злих духів. Прямий хрест - символ Творця, Сонця та чоловічого начала. Косий хрест - жіноче начало, символ Місяця.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="svarga.png" alt="Сварга">
+    </div>
+    <div class="media-text">
+        <h2>Сварга</h2>
+        <p>Символ сонячного культу, домашнього вогнища, родинного щастя.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="povnaroga.png" alt="Повна рожа (восьмипроменева зірка)">
+    </div>
+    <div class="media-text">
+        <h2>Повна рожа (восьмипроменева зірка)</h2>
+        <p>Поєднання жіночого та чоловічого начал, що дає життя усьому. Цей символ часто називають Зіркою Богородиці і вишивають на іконах Діви Марії.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="dance.png" alt="Кривий танець (безконечник)">
+    </div>
+    <div class="media-text">
+        <h2>Кривий танець (безконечник)</h2>
+        <p>Cимволізує життєвий шлях тає символом вічного буття, сили та життєвої енергії.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="romb.png" alt="Ромб">
+    </div>
+    <div class="media-text">
+        <h2>Ромб</h2>
+        <p>Союз сонця і землі, символ плодючості.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="rombdot.png" alt="Ромб з крапкою посередині">
+    </div>
+    <div class="media-text">
+        <h2>Ромб з крапкою посередині</h2>
+        <p>Засіяне поле.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="circle.png" alt="Коло">
+    </div>
+    <div class="media-text">
+        <h2>Коло</h2>
+        <p>Символ сонця, божественної енергії, безперервності буття та вічності.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="plantmotive.png" alt="Рослинний мотив">
+    </div>
+    <div class="media-text">
+        <h2>Рослинний мотив</h2>
+        <p>Символ чистоти, процвітання роду та життя.</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="kaluna.png" alt="Калина">
+    </div>
+    <div class="media-text">
+        <h2>Калина</h2>
+        <p>Любов, багатство, краса. Також це символ материнства (кущ - мати, ягоди - дітвора).</p>
+    </div>
+</div>
+<div class="media-block">
+    <div class="media-image">
+        <img src="dub.png" alt="Гілки дуба">
+    </div>
+    <div class="media-text">
+        <h2>Гілки дуба</h2>
+        <p>Вишиваються зазвичай на чоловічих сорочках, як прообраз Перуна.</p>
+    </div>
+</div>
+<div class="media-block">
+            <div class="media-image">
+                <img src="loza.png" alt="Виноград та лоза">
+            </div>
+            <div class="media-text">
+                <h2>Виноград та лоза</h2>
+                <p>Давній символ сімейного щастя.</p>
+            </div>
+</div>
+<div class="media-block">
+            <div class="media-image">
+                <img src="dove.png" alt="Голуб">
+            </div>
+            <div class="media-text">
+                <h2>Голуб</h2>
+                <p>Символ Святого Духа. А також - щирої любові, злагоди й ніжності.Голуб і голубка в парі -символ вічної та вірної любові. </p>
+            </div>
+</div>
+        <p>Також ви можете створити власний орнамент. Зробити це дуже просто за допомогою спеціальної абетки та прикладів орнаментів, наведених нижче.</p>
+        <div class="header-decor">
+        <img src="alphabet.png" alt="Абетка" width="600" height="847">
+        </div>
+        <div class="header-decor">
+            <img src="numbers.png" alt="Цифри" width="600" height="847">
+        </div>
+        <div class="header-decor">
+            <img src="calendar.png" alt="Календар" width="600" height="847">
+        </div>
+        <div class="header-decor">
+            <img src="moon.png" alt="Фази місяця">
+        </div>
+        <div class="header-decor">
+            <img src="week.png" alt="Дні тижня">
+        </div>
+        <div class="header-decor">
+            <img src="words1.png" alt="Приклади написання слів1">
+        </div>
+        <div class="header-decor">
+            <img src="words2.png" alt="Приклади написання слів2">
+        </div>
+
+
+
+<h2>Значення кольору української вишиванки </h2>
+        <h3>Сакральне значення мають не лише візерунки на сорочці, але і їх колір:</h3>
+        <ul>
+            <li><span><strong>Червоний</strong> — колір сонця, удачі, захисту, любові й пристрасті</span></li>
+            <li><span><strong>Зелений</strong> — символізує процеси народження та росту.</span></li>
+            <li><span><strong>Жовтий</strong> — колір сонячної енергії, життя, радості, багатства і процвітання.</span></li>
+            <li><span><strong>Синій</strong> —  символ жіночої енергії, спокою, колір води і неба.</span></li>
+            <li><span><strong>Білий</strong> — колір чистоти, святості, незайманості (білі сорочки носили незаміжні дівчата).</span></li>
+            <li><span><strong>Чорний</strong> — колір землі та родючості, але в деяких регіонах цей колір означав біль та страждання, тому будьте обережними, обираючий даний колір.</span></li>
+        </ul>
+        <p>І тепер, ознайомившись з орнаментами та символами, можете приступати до створення свого власного візерунку!</p>
+    </main>
+
+    <footer>
+        <p>© 2026 Embroidery Maker. Джерело: https://golka.com.ua/kat-tov-vishivanki--dovidkova-info-pro-vishivanki/symvolika-v-ukrayinskiy-vyshyvtsi. Створено з повагою до українських традицій.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
