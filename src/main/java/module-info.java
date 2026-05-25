@@ -4,6 +4,7 @@ module university.ua.embroideryproject {
     requires java.desktop;
     requires javafx.swing;
     requires jdk.compiler;
+    requires javafx.web;
 
 
     opens university.ua.embroideryproject to javafx.fxml;

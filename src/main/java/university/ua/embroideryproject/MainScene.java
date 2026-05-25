@@ -3,6 +3,8 @@ package university.ua.embroideryproject;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -15,14 +17,11 @@ public class MainScene {
     public static ToggleButton pencil;
     public static CheckBox horizontal;
     public static CheckBox vertical;
-    public static Label width;
-    public static Label height;
-    public static TextField inputColumns;
-    public static  TextField inputRows;
     public static Button duplicate;
     public static Button loadPicture;
     public static ToggleButton eyedropper;
     public static Slider pencilSize;
+    public static Button nullCanvas;
     public static Text forPencil;
     public static Text forSymetric;
     public static int valueForPencil =1;
@@ -32,10 +31,9 @@ public class MainScene {
     public static Text getInstructionForEyedropper = new Text("клік мишкою, щоб вибрати колір з полотна");
     public static Text getInstructionForSymetricV = new Text("малюнок симетрично осі У");
     public static Text getInstructionForSymetricH = new Text("малюнок симетрично осі Х");
-    public static Text getInstructionForDuplicate = new Text("скопіювати поточний патерн, оберіть симетрію і натисніть кнопку ще раз)");
+    public static Text getInstructionForDuplicate = new Text("скопіювати поточний патерн, оберіть симетрію");
 
     public static void mainSceneProperties(Stage stage, Group root2) {
-
         returnToMenuButton(stage, root2);
         EmbroideryCanvas.drawEmbroideryCanvas();
         savePictureButton( root2);
@@ -51,7 +49,11 @@ public class MainScene {
         loadPictureButton(root2);
         eyedropperButton(root2);
         pencilSizeSlider(root2);
+        nullCanvasButton(root2);
         forPencilText(root2);
+        Utils.textInstruction(MainScene.getInstructionForPencil, MainScene.getInstructionForSymetricV,
+                MainScene.getInstructionForDuplicate, MainScene.getInstructionForErasser, MainScene.getInstructionForEyedropper,
+                MainScene.instructionForFill, MainScene.getInstructionForSymetricH);
 
 
 
@@ -62,6 +64,17 @@ public class MainScene {
 
 
     }
+
+    private static void nullCanvasButton(Group root2) {
+            nullCanvas = new Button("ОЧИСТИТИ ПОЛОТНО");
+            nullCanvas.setPrefSize(280, 61);
+            nullCanvas.setLayoutX(1006);
+            nullCanvas.setLayoutY(300);
+            buttonStyle(nullCanvas, root2, 17);
+            nullCanvas.setOnAction(
+                    (l) -> EmbroideryCanvas.drawEmbroideryCanvas()
+            );
+        }
 
     private static void forPencilText(Group root2) {
         forPencil = new Text("розмір пензля : 1");
@@ -120,11 +133,11 @@ public class MainScene {
     }
 
     private static void loadPictureButton(Group root2) {
-        loadPicture = new Button("LOAD");
+        loadPicture = new Button("ЗАВАНТАЖИТИ З ФАЙЛІВ");
         loadPicture.setPrefSize(280, 61);
         loadPicture.setLayoutX(1006);
-        loadPicture.setLayoutY(200);
-        buttonStyle(loadPicture, root2);
+        loadPicture.setLayoutY(170);
+        buttonStyle(loadPicture, root2, 17);
         loadPicture.setOnAction(
                 (l) -> WorkWithPictures.loadPNG()
         );
@@ -136,10 +149,8 @@ public class MainScene {
         duplicate.setLayoutX(0);
         duplicate.setLayoutY(540);
         duplicate.setPrefSize(280, 40);
-        buttonStyle(duplicate, root2);
-        duplicate.setOnAction(
-                (d) -> EmbroideryCanvas.duplicatePattern()
-        );
+        buttonStyle(duplicate, root2,22);
+
 
     }
 
@@ -206,15 +217,15 @@ public class MainScene {
     }
 
     private static void resizeCanvasButton( Group root2) {
-        resizeCanvas = new Button("RESIZE CANVAS");
+        resizeCanvas = new Button("РОЗМІР ПОЛОТНА");
         resizeCanvas.setPrefSize(280, 61);
         resizeCanvas.setLayoutX(0);
         resizeCanvas.setLayoutY(650);
-        buttonStyle(resizeCanvas, root2);
-        width = new Label("Введіть кількість стовпчиків (1-100) :");
-        inputColumns = new TextField("30");
-        height = new Label("Введіть кількість рядків (1-100) :");
-        inputRows = new TextField("30");
+        buttonStyle(resizeCanvas, root2, 22);
+        ResizeCanvas.width = new Label("Введіть кількість стовпчиків (1-100) :");
+        ResizeCanvas.inputColumns = new TextField("30");
+        ResizeCanvas.height = new Label("Введіть кількість рядків (1-100) :");
+        ResizeCanvas.inputRows = new TextField("30");
         resizeCanvas.setOnAction(
                 (sc) ->  ResizeCanvas.resize()
         );
@@ -232,7 +243,7 @@ public class MainScene {
         textForColor.setY(80);
         root2.getChildren().add(textForColor);
 
-        Main.colorForEmbroidery = new ColorPicker();
+        Main.colorForEmbroidery = new ColorPicker(Color.DARKRED);
         Main.colorForEmbroidery.setStyle("-fx-border-color:  #b52302;" +
                 "-fx-font-size: 24px; " +
                 "-fx-font-weight: bold;" +
@@ -245,11 +256,11 @@ public class MainScene {
     }
 
     private static void savePictureButton(Group root2) {
-        savePicture = new Button("ЗБЕРЕГТИ");
+        savePicture = new Button("ЗБЕРЕГТИ СХЕМУ");
         savePicture.setPrefSize(280, 61);
         savePicture.setLayoutX(1006);
         savePicture.setLayoutY(100);
-        buttonStyle(savePicture, root2);
+        buttonStyle(savePicture, root2, 17);
 
         savePicture.setOnAction(
                 (s) -> WorkWithPictures.saveAsPNG()
@@ -260,25 +271,26 @@ public class MainScene {
     }
 
     private static void returnToMenuButton(Stage stage, Group root2) {
-        returnToMenu = new Button("RETURN TO MENU");
+        returnToMenu = new Button("ДО МЕНЮ");
         returnToMenu.setPrefSize(280, 61);
         returnToMenu.setLayoutX(1006 );
         returnToMenu.setLayoutY(500);
-        buttonStyle(returnToMenu, root2);
+        buttonStyle(returnToMenu, root2, 24);
 
         returnToMenu.setOnAction(
                 (m) -> stage.setScene(Main.menuScene));
     }
 
 
-    private static void buttonStyle(Button button, Group root2){
+    private static void buttonStyle(Button button, Group root2, int fontSize){
         button.setStyle(
                 "-fx-border-color:  #b52302;" +
                         "-fx-text-fill:  #b52302;" +
-                        "-fx-font-size: 24px; " +
-                        "-fx-font-weight: bold;" +
-                        "-fx-font-family: 'Georgia';"
+                        "-fx-font-weight: bold;"+
+                        "-fx-font-size: " + fontSize + "px;"+
+                        "-fx-font-family: 'Georgia'; "
         );
+        button.setFont(Font.font("Georgia", fontSize));
         root2.getChildren().add(button);
     }
 

@@ -69,15 +69,6 @@ public class PixelDrawName {
         matrix[23][7] =1; matrix[24][6] = 1; matrix[26][4] =1;
         matrix[23][23] =1; matrix[24][24] =1; matrix[26][26] =1;
 
-//        for (int row = 0; row < 31; row++) {
-//            for (int col = 0; col < 31; col++) {
-//                if (matrix[row][col] == 1) {
-//                    drawPixel(startX + col * s, startY + row * s);
-//
-//                }
-//            }
-//        }
-
         List<int[]> pointsToDraw = new ArrayList<>();
         for (int r = 0; r < 31; r++) {
             for (int c = 0; c < 31; c++) {
@@ -104,13 +95,14 @@ public class PixelDrawName {
     public static void drawPixel(int x, int y) {
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
-                writer.setColor(x + j, y + i, Color.DARKRED);
+                if( i < 1 || j < 1 || j > 23 || i > 23){
+                    writer.setColor(x + j, y + i, Color.rgb(252, 225, 189));
+                } else if (Math.abs(i - j) <= 1 || Math.abs((i + j) - 24) <= 1) {
+                    writer.setColor(x + j, y + i, Color.BLACK);
+                } else{
+                    writer.setColor(x + j, y + i, Color.rgb(174, 17, 3));
+                }
             }
         }
-    }
 
-
-
-
-
-}
+}}
