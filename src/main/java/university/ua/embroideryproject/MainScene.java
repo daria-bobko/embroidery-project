@@ -21,6 +21,19 @@ public class MainScene {
     public static  TextField inputRows;
     public static Button duplicate;
     public static Button loadPicture;
+    public static ToggleButton eyedropper;
+    public static Slider pencilSize;
+    public static Text forPencil;
+    public static Text forSymetric;
+    public static int valueForPencil =1;
+    public static Text instructionForFill = new Text("натисність двічі на полотно, щоб заповнити його кольором");
+    public static Text getInstructionForErasser = new Text("клік мишкою, або затисніть і ведіть, щоб стерти");
+    public static Text getInstructionForPencil = new Text("клік мишкою, або затисніть і ведіть, щоб малювати");
+    public static Text getInstructionForEyedropper = new Text("клік мишкою, щоб вибрати колір з полотна");
+    public static Text getInstructionForSymetricV = new Text("малюнок симетрично осі У");
+    public static Text getInstructionForSymetricH = new Text("малюнок симетрично осі Х");
+    public static Text getInstructionForDuplicate = new Text("скопіювати поточний патерн, оберіть симетрію і натисніть кнопку ще раз)");
+
     public static void mainSceneProperties(Stage stage, Group root2) {
 
         returnToMenuButton(stage, root2);
@@ -31,16 +44,78 @@ public class MainScene {
         fillBackgroundToggleButton(root2);
         eraserToggleButton( root2);
         pencilToggleButton(root2);
+        textForSymetric(root2);
         horizontalSymetricCheckBox(root2);
         verticalSymetricCheckBox(root2);
         duplicatePatternButton(root2);
         loadPictureButton(root2);
+        eyedropperButton(root2);
+        pencilSizeSlider(root2);
+        forPencilText(root2);
 
 
-        Utils.toggleButtonAction(pencil, eraser, fillBackground);
-        Utils.toggleButtonAction(fillBackground, pencil, eraser);
-        Utils.toggleButtonAction(eraser, pencil, fillBackground);
 
+        Utils.toggleButtonAction(pencil, eraser, fillBackground, eyedropper);
+        Utils.toggleButtonAction(fillBackground, pencil, eraser, eyedropper);
+        Utils.toggleButtonAction(eraser, pencil, fillBackground, eyedropper);
+        Utils.toggleButtonAction(eyedropper, pencil, eraser, fillBackground);
+
+
+    }
+
+    private static void forPencilText(Group root2) {
+        forPencil = new Text("розмір пензля : 1");
+        forPencil.setStyle(
+                "-fx-font-family: 'Verdana'; " +
+                        "-fx-font-size: 24px; " +
+                        "-fx-fill: #b52302; " +
+                        "-fx-font-weight: bold;"
+        );
+        forPencil.setX(0);
+        forPencil.setY(300);
+        root2.getChildren().add(forPencil);
+    }
+
+    private static void textForSymetric(Group root2) {
+        forSymetric = new Text("симетрія :");
+        forSymetric.setStyle(
+                "-fx-font-family: 'Verdana'; " +
+                        "-fx-font-size: 24px; " +
+                        "-fx-fill: #b52302; " +
+                        "-fx-font-weight: bold;"
+        );
+        forSymetric.setX(0);
+        forSymetric.setY(400);
+        root2.getChildren().add(forSymetric);
+    }
+
+    private static void pencilSizeSlider(Group root2) {
+        pencilSize = new Slider(1, 4, 1);
+        pencilSize.setShowTickLabels(true);
+        pencilSize.setShowTickMarks(true);
+        pencilSize.setMajorTickUnit(1);
+        pencilSize.setMinorTickCount(0);
+        pencilSize.setSnapToTicks(true);
+        pencilSize.setLayoutX(0);
+        pencilSize.setLayoutY(330);
+        pencilSize.setPrefWidth(280);
+        pencilSize.setStyle("-fx-tick-label-font-size: 50px; -fx-tick-label-font-weight: bold;");
+        root2.getChildren().add(pencilSize);
+        pencilSize.valueProperty().addListener((observable, oldValue, newValue) -> {
+            valueForPencil = newValue.intValue();
+            forPencil.setText("розмір пензля : " + valueForPencil);
+        });
+
+    }
+
+    private static void eyedropperButton(Group root2) {
+        eyedropper = new ToggleButton();
+        Image iconForEyedropper = new Image(MainScene.class.getResourceAsStream("/eyedropper.png"));
+        eyedropper.setGraphic(new javafx.scene.image.ImageView(iconForEyedropper));
+        eyedropper.setPrefSize(85, 61);
+        eyedropper.setLayoutX(195);
+        eyedropper.setLayoutY(100);
+        toggleButtonStyle(eyedropper, root2);
 
     }
 
@@ -59,7 +134,7 @@ public class MainScene {
     private static void duplicatePatternButton(Group root2) {
         duplicate = new Button("дублювати шаблон");
         duplicate.setLayoutX(0);
-        duplicate.setLayoutY(430);
+        duplicate.setLayoutY(540);
         duplicate.setPrefSize(280, 40);
         buttonStyle(duplicate, root2);
         duplicate.setOnAction(
@@ -77,7 +152,7 @@ public class MainScene {
                 "-fx-font-family: 'Georgia';"
         );
         vertical.setLayoutX(0);
-        vertical.setLayoutY(300);
+        vertical.setLayoutY(420);
         vertical.setPrefSize(280, 40);
         root2.getChildren().add(vertical);
 
@@ -93,7 +168,7 @@ public class MainScene {
                 "-fx-font-family: 'Georgia';"
         );
         horizontal.setLayoutX(0);
-        horizontal.setLayoutY(360);
+        horizontal.setLayoutY(480);
         horizontal.setPrefSize(280, 40);
         root2.getChildren().add(horizontal);
 
@@ -103,7 +178,7 @@ public class MainScene {
         pencil = new ToggleButton();
         pencil.setSelected(true);
         pencil.setLayoutX(195);
-        pencil.setLayoutY(200);
+        pencil.setLayoutY(180);
         Image iconForPencil = new Image(MainScene.class.getResourceAsStream("/pencil.png"));
         pencil.setGraphic(new javafx.scene.image.ImageView(iconForPencil));
         pencil.setPrefSize(85, 61);
@@ -113,7 +188,7 @@ public class MainScene {
     private static void eraserToggleButton( Group root2) {
         eraser = new ToggleButton();
         eraser.setLayoutX(97);
-        eraser.setLayoutY(200);
+        eraser.setLayoutY(180);
         Image iconForEraser = new Image(MainScene.class.getResourceAsStream("/eraser.png"));
         eraser.setGraphic(new javafx.scene.image.ImageView(iconForEraser));
         eraser.setPrefSize(85, 61);
@@ -123,7 +198,7 @@ public class MainScene {
     private static void fillBackgroundToggleButton(Group root2) {
         fillBackground = new ToggleButton();
         fillBackground.setLayoutX(0);
-        fillBackground.setLayoutY(200);
+        fillBackground.setLayoutY(180);
         Image iconForFill = new Image(MainScene.class.getResourceAsStream("/fill.png"));
         fillBackground.setGraphic(new javafx.scene.image.ImageView(iconForFill));
         fillBackground.setPrefSize(84, 61);
@@ -134,7 +209,7 @@ public class MainScene {
         resizeCanvas = new Button("RESIZE CANVAS");
         resizeCanvas.setPrefSize(280, 61);
         resizeCanvas.setLayoutX(0);
-        resizeCanvas.setLayoutY(500);
+        resizeCanvas.setLayoutY(650);
         buttonStyle(resizeCanvas, root2);
         width = new Label("Введіть кількість стовпчиків (1-100) :");
         inputColumns = new TextField("30");
@@ -146,7 +221,7 @@ public class MainScene {
     }
 
     private static void colorForEmbroideryPicker(Group root2) {
-        Text textForColor = new Text("choose color :");
+        Text textForColor = new Text("колір :");
         textForColor.setStyle(
                 "-fx-font-family: 'Verdana'; " +
                         "-fx-font-size: 24px; " +
@@ -154,7 +229,7 @@ public class MainScene {
                         "-fx-font-weight: bold;"
         );
         textForColor.setX(0);
-        textForColor.setY(70);
+        textForColor.setY(80);
         root2.getChildren().add(textForColor);
 
         Main.colorForEmbroidery = new ColorPicker();
@@ -165,12 +240,12 @@ public class MainScene {
         );
         Main.colorForEmbroidery.setLayoutX(0);
         Main.colorForEmbroidery.setLayoutY(100);
-        Main.colorForEmbroidery.setPrefSize(280, 61);
+        Main.colorForEmbroidery.setPrefSize(182, 68);
         root2.getChildren().add(Main.colorForEmbroidery);
     }
 
     private static void savePictureButton(Group root2) {
-        savePicture = new Button("SAVE");
+        savePicture = new Button("ЗБЕРЕГТИ");
         savePicture.setPrefSize(280, 61);
         savePicture.setLayoutX(1006);
         savePicture.setLayoutY(100);
