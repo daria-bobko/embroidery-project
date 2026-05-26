@@ -35,7 +35,7 @@ public static void main(String[] args) {
         MainScene.mainSceneProperties(stage, rootMain);
         stage.show();
 
-        EmbroideryCanvas.mouseHandle();
+        MouseHandler.mouseHandle();
    }
 
 }

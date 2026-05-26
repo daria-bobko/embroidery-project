@@ -125,7 +125,7 @@ public class WorkWithPictures {
                         }
                     }
                 }
-                EmbroideryCanvas.printDownLoadPicture();
+                EmbroideryCanvas.printDownLoadPicture(borderColor);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Готово!");
                 alert.setHeaderText(null);

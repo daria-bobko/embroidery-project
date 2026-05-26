@@ -95,107 +95,6 @@ public class EmbroideryCanvas {
     }
 
 
-
-    public static void mouseHandle(){
-        imageView.setPickOnBounds(true);
-        imageView.toBack();
-        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            double x = e.getX();
-            double y = e.getY();
-            if(e.getClickCount() == 2&&MainScene.fillBackground.isSelected()){
-                fillAllCanvas(MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());
-            }
-            if(MainScene.eraser.isSelected()){
-                drawOnCanvas(x, y, Color.WHITE, MainScene.forGridChangePicker.getValue());
-            }
-            if(MainScene.pencil.isSelected()){
-                drawOnCanvas(x, y, MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());
-            }
-            if(MainScene.eyedropper.isSelected()){
-                if (x <= screenStartX + (Main.CELL_SIZE * Main.COLS) && x>= screenStartX && y <= screenStartY + (Main.CELL_SIZE * Main.ROWS) && y >= screenStartY) {
-
-                    int placeInMatrixColumn = (int) (x - screenStartX) / Main.CELL_SIZE;
-                    int placeInMatrixRow = (int) (y - screenStartY) / Main.CELL_SIZE;
-                    Color choosenColor = Main.grid[placeInMatrixRow][placeInMatrixColumn];
-                    if(choosenColor == null){
-                        choosenColor = Color.WHITE;
-                    }
-                    MainScene.colorForEmbroidery.setValue(choosenColor);
-                }}}
-        );
-        imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-            double x = e.getX();
-            double y = e.getY();
-            if(MainScene.eraser.isSelected()){
-                drawOnCanvas(x, y, Color.WHITE, MainScene.forGridChangePicker.getValue());
-            }
-            if (MainScene.pencil.isSelected()){
-                drawOnCanvas(x, y, MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());}
-        });
-        imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
-            if(MainScene.eyedropper.isSelected()){
-                imageView.setCursor(javafx.scene.Cursor.CROSSHAIR);
-            }
-            if(MainScene.pencil.isSelected()){
-                Image cursor = new Image(EmbroideryCanvas.class.getResourceAsStream("/cursor.png"));
-                imageView.setCursor(new ImageCursor(cursor, 0, cursor.getHeight()));
-            }
-            if(MainScene.eraser.isSelected()){
-                Image cursor = new Image(EmbroideryCanvas.class.getResourceAsStream("/cursor-eraser.png"));
-                imageView.setCursor(new ImageCursor(cursor, 0, cursor.getHeight()));
-            }
-            if(MainScene.fillBackground.isSelected()){
-                Image cursor = new Image(EmbroideryCanvas.class.getResourceAsStream("/cursor-fill.png"));
-                imageView.setCursor(new ImageCursor(cursor, cursor.getWidth(), cursor.getHeight()));
-            }
-        });
-        MainScene.pencil.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.getInstructionForPencil, MainScene.getInstructionForSymetricV,
-                        MainScene.getInstructionForDuplicate, MainScene.getInstructionForErasser, MainScene.getInstructionForEyedropper,
-                        MainScene.instructionForFill, MainScene.getInstructionForSymetricH);
-            });
-        MainScene.eraser.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.getInstructionForErasser, MainScene.getInstructionForSymetricV,
-                        MainScene.getInstructionForDuplicate, MainScene.getInstructionForPencil, MainScene.getInstructionForEyedropper,
-                        MainScene.instructionForFill, MainScene.getInstructionForSymetricH);
-                }        );
-
-        MainScene.fillBackground.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.instructionForFill, MainScene.getInstructionForSymetricV,
-                        MainScene.getInstructionForDuplicate, MainScene.getInstructionForPencil, MainScene.getInstructionForErasser,
-                        MainScene.getInstructionForEyedropper,MainScene.getInstructionForSymetricH);
-        }        );
-
-        MainScene.eyedropper.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.getInstructionForEyedropper, MainScene.getInstructionForSymetricV,
-                        MainScene.getInstructionForDuplicate, MainScene.getInstructionForPencil, MainScene.getInstructionForErasser,
-                        MainScene.instructionForFill, MainScene.getInstructionForSymetricH);
-
-        }        );
-
-        MainScene.vertical.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.getInstructionForSymetricV, MainScene.getInstructionForDuplicate,
-                        MainScene.getInstructionForPencil, MainScene.getInstructionForErasser, MainScene.getInstructionForEyedropper,
-                        MainScene.getInstructionForSymetricH, MainScene.instructionForFill);}
-                );
-
-
-        MainScene.horizontal.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                Utils.textInstruction(MainScene.getInstructionForSymetricH, MainScene.getInstructionForDuplicate,
-                        MainScene.getInstructionForPencil, MainScene.getInstructionForErasser, MainScene.getInstructionForEyedropper,
-                        MainScene.instructionForFill, MainScene.getInstructionForSymetricV);
-        }        );
-        MainScene.duplicate.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> {
-                    Utils.textInstruction(MainScene.getInstructionForDuplicate, MainScene.getInstructionForEyedropper,
-                            MainScene.getInstructionForPencil, MainScene.getInstructionForErasser, MainScene.instructionForFill,
-                            MainScene.getInstructionForSymetricH, MainScene.getInstructionForSymetricV);
-                    EmbroideryCanvas.duplicatePattern();}
-        );
-
-
-
-    }
-
     public static void duplicatePattern() {
         if (MainScene.horizontal.isSelected()) {
             for (int row = 0; row < Main.ROWS / 2; row++) {
@@ -258,7 +157,7 @@ public class EmbroideryCanvas {
 
     }}
 
-public static void printDownLoadPicture(){
+public static void printDownLoadPicture(Color grid){
     Main.rootMain.getChildren().remove(imageView);
     writableImage = new WritableImage(1300, 900);
     writer = EmbroideryCanvas.writableImage.getPixelWriter();
@@ -276,7 +175,7 @@ public static void printDownLoadPicture(){
             if (cellColor == null) {
                 cellColor = Color.WHITE;
             }
-            drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, cellColor, MainScene.forGridChangePicker.getValue());
+            drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, cellColor, grid);
         }
     }
     screenStartX = (1290 - canvasWidth)/2.0;

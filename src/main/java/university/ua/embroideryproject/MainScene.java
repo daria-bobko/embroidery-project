@@ -3,6 +3,7 @@ package university.ua.embroideryproject;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -59,23 +60,15 @@ public class MainScene {
                 MainScene.getInstructionForDuplicate, MainScene.getInstructionForErasser, MainScene.getInstructionForEyedropper,
                 MainScene.instructionForFill, MainScene.getInstructionForSymetricH);
 
-
-
         Utils.toggleButtonAction(pencil, eraser, fillBackground, eyedropper);
         Utils.toggleButtonAction(fillBackground, pencil, eraser, eyedropper);
         Utils.toggleButtonAction(eraser, pencil, fillBackground, eyedropper);
         Utils.toggleButtonAction(eyedropper, pencil, eraser, fillBackground);
-
-
     }
 
-
-    private static void forGridButton(Group root2) {
+ private static void forGridButton(Group root2) {
         buttonForGridChange = new Button("КОЛІР СІТКИ");
-        buttonForGridChange.setPrefSize(280, 61);
-        buttonForGridChange.setLayoutX(1006);
-        buttonForGridChange.setLayoutY(395);
-        buttonStyle(buttonForGridChange, root2, 24);
+        Utils.createButton(buttonForGridChange, 280, 61, 1006, 395, 24);
         buttonForGridChange.setOnAction(
                 (l) -> GridChangeColor.change()
         );
@@ -83,10 +76,7 @@ public class MainScene {
 
     private static void nullCanvasButton(Group root2) {
             nullCanvas = new Button("ОЧИСТИТИ ПОЛОТНО");
-            nullCanvas.setPrefSize(280, 40);
-            nullCanvas.setLayoutX(0);
-            nullCanvas.setLayoutY(680);
-            buttonStyle(nullCanvas, root2, 17);
+            Utils.createButton(nullCanvas, 280, 40, 0, 680, 17);
             nullCanvas.setOnAction(
                     (l) -> EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue())
             );
@@ -94,28 +84,12 @@ public class MainScene {
 
     private static void forPencilText(Group root2) {
         forPencil = new Text("розмір пензля : 1");
-        forPencil.setStyle(
-                "-fx-font-family: 'Verdana'; " +
-                        "-fx-font-size: 24px; " +
-                        "-fx-fill: #b52302; " +
-                        "-fx-font-weight: bold;"
-        );
-        forPencil.setX(0);
-        forPencil.setY(300);
-        root2.getChildren().add(forPencil);
+        Utils.textProperties(forPencil, 0, 300);
     }
 
     private static void textForSymetric(Group root2) {
         forSymetric = new Text("симетрія :");
-        forSymetric.setStyle(
-                "-fx-font-family: 'Verdana'; " +
-                        "-fx-font-size: 24px; " +
-                        "-fx-fill: #b52302; " +
-                        "-fx-font-weight: bold;"
-        );
-        forSymetric.setX(0);
-        forSymetric.setY(400);
-        root2.getChildren().add(forSymetric);
+        Utils.textProperties(forSymetric, 0, 400);
     }
 
     private static void pencilSizeSlider(Group root2) {
@@ -139,21 +113,12 @@ public class MainScene {
 
     private static void eyedropperButton(Group root2) {
         eyedropper = new ToggleButton();
-        Image iconForEyedropper = new Image(MainScene.class.getResourceAsStream("/eyedropper.png"));
-        eyedropper.setGraphic(new javafx.scene.image.ImageView(iconForEyedropper));
-        eyedropper.setPrefSize(85, 61);
-        eyedropper.setLayoutX(195);
-        eyedropper.setLayoutY(100);
-        toggleButtonStyle(eyedropper, root2);
-
+        Utils.createToggleButton(eyedropper, 85, 61, 195, 100, "/eyedropper.png" );
     }
 
     private static void loadPictureButton(Group root2) {
         loadPicture = new Button("ЗАВАНТАЖИТИ З ФАЙЛІВ");
-        loadPicture.setPrefSize(280, 61);
-        loadPicture.setLayoutX(1006);
-        loadPicture.setLayoutY(170);
-        buttonStyle(loadPicture, root2, 17);
+        Utils.createButton(loadPicture, 280, 61, 1006, 170, 17);
         loadPicture.setOnAction(
                 (l) -> WorkWithPictures.loadPNG()
         );
@@ -162,12 +127,7 @@ public class MainScene {
 
     private static void duplicatePatternButton(Group root2) {
         duplicate = new Button("дублювати шаблон");
-        duplicate.setLayoutX(0);
-        duplicate.setLayoutY(540);
-        duplicate.setPrefSize(280, 40);
-        buttonStyle(duplicate, root2,22);
-
-
+        Utils.createButton(duplicate, 280, 40,0, 540, 22);
     }
 
     private static void verticalSymetricCheckBox(Group root2) {
@@ -182,8 +142,6 @@ public class MainScene {
         vertical.setLayoutY(420);
         vertical.setPrefSize(280, 40);
         root2.getChildren().add(vertical);
-
-
     }
 
     private static void horizontalSymetricCheckBox(Group root2) {
@@ -198,46 +156,27 @@ public class MainScene {
         horizontal.setLayoutY(480);
         horizontal.setPrefSize(280, 40);
         root2.getChildren().add(horizontal);
-
     }
 
     private static void pencilToggleButton( Group root2) {
         pencil = new ToggleButton();
-        pencil.setSelected(true);
-        pencil.setLayoutX(195);
-        pencil.setLayoutY(180);
-        Image iconForPencil = new Image(MainScene.class.getResourceAsStream("/pencil.png"));
-        pencil.setGraphic(new javafx.scene.image.ImageView(iconForPencil));
-        pencil.setPrefSize(85, 61);
-        toggleButtonStyle(pencil, root2);
+        Utils.createToggleButton(pencil, 85, 61, 195, 180, "/pencil.png" );
     }
 
     private static void eraserToggleButton( Group root2) {
         eraser = new ToggleButton();
-        eraser.setLayoutX(97);
-        eraser.setLayoutY(180);
-        Image iconForEraser = new Image(MainScene.class.getResourceAsStream("/eraser.png"));
-        eraser.setGraphic(new javafx.scene.image.ImageView(iconForEraser));
-        eraser.setPrefSize(85, 61);
-        toggleButtonStyle(eraser, root2);
+        Utils.createToggleButton(eraser, 85, 61, 97, 180, "/eraser.png");
     }
 
     private static void fillBackgroundToggleButton(Group root2) {
         fillBackground = new ToggleButton();
-        fillBackground.setLayoutX(0);
-        fillBackground.setLayoutY(180);
-        Image iconForFill = new Image(MainScene.class.getResourceAsStream("/fill.png"));
-        fillBackground.setGraphic(new javafx.scene.image.ImageView(iconForFill));
-        fillBackground.setPrefSize(84, 61);
-        toggleButtonStyle(fillBackground, root2);
+        Utils.createToggleButton(fillBackground, 84, 61, 0, 180, "/fill.png");
+
     }
 
     private static void resizeCanvasButton( Group root2) {
         resizeCanvas = new Button("РОЗМІР ПОЛОТНА");
-        resizeCanvas.setPrefSize(280, 61);
-        resizeCanvas.setLayoutX(1006);
-        resizeCanvas.setLayoutY(325);
-        buttonStyle(resizeCanvas, root2, 22);
+        Utils.createButton(resizeCanvas, 280, 61, 1006, 325, 22);
         ResizeCanvas.width = new Label("Введіть кількість стовпчиків (1-100) :");
         ResizeCanvas.inputColumns = new TextField("30");
         ResizeCanvas.height = new Label("Введіть кількість рядків (1-100) :");
@@ -249,15 +188,7 @@ public class MainScene {
 
     private static void colorForEmbroideryPicker(Group root2) {
         Text textForColor = new Text("колір :");
-        textForColor.setStyle(
-                "-fx-font-family: 'Verdana'; " +
-                        "-fx-font-size: 24px; " +
-                        "-fx-fill: #b52302; " +
-                        "-fx-font-weight: bold;"
-        );
-        textForColor.setX(0);
-        textForColor.setY(80);
-        root2.getChildren().add(textForColor);
+        Utils.textProperties(textForColor, 0, 80);
 
         MainScene.colorForEmbroidery = new ColorPicker(Color.DARKRED);
         MainScene.colorForEmbroidery.setStyle("-fx-border-color:  #b52302;" +
@@ -286,11 +217,7 @@ public class MainScene {
 
     private static void savePictureButton(Group root2) {
         savePicture = new Button("ЗБЕРЕГТИ СХЕМУ");
-        savePicture.setPrefSize(280, 61);
-        savePicture.setLayoutX(1006);
-        savePicture.setLayoutY(100);
-        buttonStyle(savePicture, root2, 20);
-
+        Utils.createButton(savePicture, 280, 61, 1006, 100, 20);
         savePicture.setOnAction(
                 (s) -> WorkWithPictures.saveAsPNG()
         );
@@ -298,38 +225,9 @@ public class MainScene {
 
     private static void returnToMenuButton(Stage stage, Group root2) {
         returnToMenu = new Button("ДО МЕНЮ");
-        returnToMenu.setPrefSize(280, 61);
-        returnToMenu.setLayoutX(1006 );
-        returnToMenu.setLayoutY(680);
-        buttonStyle(returnToMenu, root2, 24);
-
+        Utils.createButton(returnToMenu, 280, 61, 1006, 680, 24);
         returnToMenu.setOnAction(
                 (m) -> stage.setScene(Main.menuScene));
     }
-
-
-    private static void buttonStyle(Button button, Group root2, int fontSize){
-        button.setStyle(
-                "-fx-border-color:  #b52302;" +
-                        "-fx-text-fill:  #b52302;" +
-                        "-fx-font-weight: bold;"+
-                        "-fx-font-size: " + fontSize + "px;"+
-                        "-fx-font-family: 'Georgia'; "
-        );
-        button.setFont(Font.font("Georgia", fontSize));
-        root2.getChildren().add(button);
-    }
-
-    private static void toggleButtonStyle(ToggleButton button, Group root2){
-        button.setStyle(
-                "-fx-border-color:  #b52302;" +
-                        "-fx-text-fill:  #b52302;" +
-                        "-fx-font-size: 24px; " +
-                        "-fx-font-weight: bold;" +
-                        "-fx-font-family: 'Georgia';"
-        );
-        root2.getChildren().add(button);
-    }
-
 
 }
