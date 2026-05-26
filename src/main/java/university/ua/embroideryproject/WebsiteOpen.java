@@ -1,8 +1,10 @@
 package university.ua.embroideryproject;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -34,12 +36,33 @@ public class WebsiteOpen {
         );
 
         buttonMenu.setPrefSize(180 , 61);
+        buttonMenu.setLayoutX(10);
 
         buttonMenu.setOnAction(event -> {
             stage.setScene(Main.menuScene);
         });
 
-        borderPane.setTop(buttonMenu);
+        Button buttonMain = new Button("СТВОРИТИ");
+        buttonMain.setStyle(
+                "-fx-border-color:  #b52302;" +
+                        "-fx-text-fill:  #b52302;" +
+                        "-fx-font-size: 22px; " +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-family: 'Georgia';"
+        );
+
+        buttonMain.setPrefSize(180 , 61);
+        buttonMain.setLayoutX(200);
+        buttonMain.setOnAction(event -> {
+            stage.setScene(Main.mainScene);
+        });
+        HBox buttonBox = new HBox(800);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.getChildren().addAll(buttonMenu, buttonMain);
+
+
+        borderPane.setTop(buttonBox);
+
 
         Scene sceneSymbols = new Scene(borderPane, 900, 600);
         stage.setScene(sceneSymbols);

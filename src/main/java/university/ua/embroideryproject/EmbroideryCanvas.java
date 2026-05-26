@@ -7,9 +7,6 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
 // 685 width for canvas
 //
 public class EmbroideryCanvas {
@@ -22,7 +19,7 @@ public class EmbroideryCanvas {
     public static double screenStartX;
     public static double screenStartY;
 
-    public static void drawEmbroideryCanvas() {
+    public static void drawEmbroideryCanvas(Color forGrid) {
         Main.rootMain.getChildren().remove(imageView);
         int canvasWidth = Main.COLS * Main.CELL_SIZE;
         int canvasHeight = Main.ROWS * Main.CELL_SIZE;
@@ -33,7 +30,7 @@ public class EmbroideryCanvas {
         writableImage = new WritableImage(canvasWidth, canvasHeight);
         writer = writableImage.getPixelWriter();
 
-        fillAllCanvas(Color.WHITE);
+        fillAllCanvas(Color.WHITE, forGrid);
         screenStartX = (1290 - canvasWidth)/2.0;
         screenStartY = (820 - canvasHeight)/2.0;
         imageView.setX(screenStartX);
@@ -43,56 +40,56 @@ public class EmbroideryCanvas {
 }
 
 
-    private static void drawCell(int x, int y, int s, Color color) {
+    private static void drawCell(int x, int y, int s, Color mainColor, Color forGrid) {
         for (int i = 0; i < s; i++) {
             for (int j = 0; j < s; j++) {
                 if (i == 0 || j == 0 || j == s - 1 || i == s - 1) {
-                    writer.setColor(x + j, y + i, Color.DARKGRAY);
+                    writer.setColor(x + j, y + i, forGrid);
                 } else {
-                    writer.setColor(x + j, y + i, color);}
+                    writer.setColor(x + j, y + i, mainColor);}
             }
         }
     }
 
-    public static void drawOnCanvas(double x, double y, Color color) {
+    public static void drawOnCanvas(double x, double y, Color mainColor, Color forGrid) {
         for(int i = 0; i < MainScene.valueForPencil; i++){
             for(int j = 0; j < MainScene.valueForPencil; j++){
         if (x + (Main.CELL_SIZE*i) < screenStartX + (Main.CELL_SIZE * Main.COLS) && x> screenStartX && y+(Main.CELL_SIZE*j) < screenStartY + (Main.CELL_SIZE * Main.ROWS) && y > screenStartY) {
             int placeInMatrixColumn = (int) (x + (Main.CELL_SIZE*i)- screenStartX) / Main.CELL_SIZE;
             int placeInMatrixRow = (int) (y+ (Main.CELL_SIZE*j) - screenStartY) / Main.CELL_SIZE;
-            Color colorSaveValue = color.equals(Color.WHITE) ? null : color;
+            Color colorSaveValue = mainColor.equals(Color.WHITE) ? null : mainColor;
             Main.grid[placeInMatrixRow][placeInMatrixColumn] = colorSaveValue;
-            drawCell(startX + placeInMatrixColumn * Main.CELL_SIZE, startY + placeInMatrixRow * Main.CELL_SIZE, Main.CELL_SIZE, color);
+            drawCell(startX + placeInMatrixColumn * Main.CELL_SIZE, startY + placeInMatrixRow * Main.CELL_SIZE, Main.CELL_SIZE, mainColor, forGrid);
 
             if (MainScene.vertical.isSelected()) {
                 int mirrorCol = Main.COLS - 1 - placeInMatrixColumn;
                 Main.grid[placeInMatrixRow][mirrorCol] = colorSaveValue;
-                drawCell(startX + mirrorCol * Main.CELL_SIZE, startY + placeInMatrixRow * Main.CELL_SIZE, Main.CELL_SIZE, color);            }
+                drawCell(startX + mirrorCol * Main.CELL_SIZE, startY + placeInMatrixRow * Main.CELL_SIZE, Main.CELL_SIZE, mainColor, forGrid);            }
             if (MainScene.horizontal.isSelected()) {
                 int mirrorRow = Main.ROWS - 1 - placeInMatrixRow;
                 Main.grid[mirrorRow][placeInMatrixColumn] = colorSaveValue;
-                drawCell(startX + placeInMatrixColumn * Main.CELL_SIZE, startY + mirrorRow * Main.CELL_SIZE, Main.CELL_SIZE, color);
+                drawCell(startX + placeInMatrixColumn * Main.CELL_SIZE, startY + mirrorRow * Main.CELL_SIZE, Main.CELL_SIZE, mainColor, forGrid);
             }
             if (MainScene.horizontal.isSelected() && MainScene.vertical.isSelected()) {
                 int mirrorCol = Main.COLS - 1 - placeInMatrixColumn;
                 int mirrorRow = Main.ROWS - 1 - placeInMatrixRow;
                 Main.grid[mirrorRow][mirrorCol] = colorSaveValue;
-                drawCell(startX + mirrorCol * Main.CELL_SIZE, startY + mirrorRow * Main.CELL_SIZE, Main.CELL_SIZE, color);
+                drawCell(startX + mirrorCol * Main.CELL_SIZE, startY + mirrorRow * Main.CELL_SIZE, Main.CELL_SIZE, mainColor, forGrid);
             }
         }}}
     }
 
-    public static void fillAllCanvas(Color color){
-        background = color;
+    public static void fillAllCanvas(Color mainColor, Color forGrid){
+        background = mainColor;
         for (int row = 0; row < Main.ROWS; row++) {
             for (int col = 0; col < Main.COLS; col++) {
-                if(color.equals(Color.WHITE)){
+                if(mainColor.equals(Color.WHITE)){
                     Main.grid[row][col] = null;
                 }
                 else {
-                    Main.grid[row][col] = color;
+                    Main.grid[row][col] = mainColor;
                 }
-                drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, color);
+                drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, mainColor, forGrid);
             }
         }
     }
@@ -106,13 +103,13 @@ public class EmbroideryCanvas {
             double x = e.getX();
             double y = e.getY();
             if(e.getClickCount() == 2&&MainScene.fillBackground.isSelected()){
-                fillAllCanvas(Main.colorForEmbroidery.getValue());
+                fillAllCanvas(MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());
             }
             if(MainScene.eraser.isSelected()){
-                drawOnCanvas(x, y, Color.WHITE);
+                drawOnCanvas(x, y, Color.WHITE, MainScene.forGridChangePicker.getValue());
             }
             if(MainScene.pencil.isSelected()){
-                drawOnCanvas(x, y, Main.colorForEmbroidery.getValue());
+                drawOnCanvas(x, y, MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());
             }
             if(MainScene.eyedropper.isSelected()){
                 if (x <= screenStartX + (Main.CELL_SIZE * Main.COLS) && x>= screenStartX && y <= screenStartY + (Main.CELL_SIZE * Main.ROWS) && y >= screenStartY) {
@@ -123,17 +120,17 @@ public class EmbroideryCanvas {
                     if(choosenColor == null){
                         choosenColor = Color.WHITE;
                     }
-                    Main.colorForEmbroidery.setValue(choosenColor);
+                    MainScene.colorForEmbroidery.setValue(choosenColor);
                 }}}
         );
         imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             double x = e.getX();
             double y = e.getY();
             if(MainScene.eraser.isSelected()){
-                drawOnCanvas(x, y, Color.WHITE);
+                drawOnCanvas(x, y, Color.WHITE, MainScene.forGridChangePicker.getValue());
             }
             if (MainScene.pencil.isSelected()){
-                drawOnCanvas(x, y, Main.colorForEmbroidery.getValue());}
+                drawOnCanvas(x, y, MainScene.colorForEmbroidery.getValue(), MainScene.forGridChangePicker.getValue());}
         });
         imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
             if(MainScene.eyedropper.isSelected()){
@@ -221,11 +218,11 @@ public class EmbroideryCanvas {
 
                     if (!topColor.equals(background)&& bottomColor.equals(background)){
                         Main.grid[mirrorRow][col] = topColor;
-                        drawCell(bottomX, bottomY, Main.CELL_SIZE, topColor);
+                        drawCell(bottomX, bottomY, Main.CELL_SIZE, topColor, MainScene.forGridChangePicker.getValue());
                     }
                     else if (!bottomColor.equals(background)&& topColor.equals(background)){
                         Main.grid[row][col] = bottomColor;
-                        drawCell(topX, topY, Main.CELL_SIZE, bottomColor);
+                        drawCell(topX, topY, Main.CELL_SIZE, bottomColor, MainScene.forGridChangePicker.getValue());
                     }
                 }
             }
@@ -250,11 +247,11 @@ public class EmbroideryCanvas {
 
                 if (!leftColor.equals(background)&& rightColor.equals(background)) {
                     Main.grid[row][mirrorCol] = leftColor;
-                    drawCell(rightX, rightY, Main.CELL_SIZE, leftColor);
+                    drawCell(rightX, rightY, Main.CELL_SIZE, leftColor, MainScene.forGridChangePicker.getValue());
                 }
                 else if (!rightColor.equals(background)&& leftColor.equals(background)){
                     Main.grid[row][col] = rightColor;
-                    drawCell(leftX, leftY, Main.CELL_SIZE, rightColor);
+                    drawCell(leftX, leftY, Main.CELL_SIZE, rightColor, MainScene.forGridChangePicker.getValue());
                 }
             }
         }
@@ -279,7 +276,7 @@ public static void printDownLoadPicture(){
             if (cellColor == null) {
                 cellColor = Color.WHITE;
             }
-            drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, cellColor);
+            drawCell(startX + col * Main.CELL_SIZE, startY + row * Main.CELL_SIZE, Main.CELL_SIZE, cellColor, MainScene.forGridChangePicker.getValue());
         }
     }
     screenStartX = (1290 - canvasWidth)/2.0;
@@ -290,5 +287,6 @@ public static void printDownLoadPicture(){
     Main.rootMain.getChildren().add(imageView);
     imageView.toBack();
 }
+
 
 }

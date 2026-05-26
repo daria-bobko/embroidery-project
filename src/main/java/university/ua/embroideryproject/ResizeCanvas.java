@@ -80,13 +80,13 @@ public static TextField inputRows;
                     Main.CELL_SIZE = Math.min(sizeByWidth, sizeByHeight);
                     if (Main.CELL_SIZE <= 0) {
                         Main.CELL_SIZE = 1;}
-                    ResizeCanvas.sizeStage.close();
-                    EmbroideryCanvas.drawEmbroideryCanvas();
+                    sizeStage.close();
+                    EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue());
                     EmbroideryCanvas.imageView.toBack();
                 });
         Button cancelButton = new Button("Вийти");
         cancelButton.setOnAction(
-                (c) -> ResizeCanvas.sizeStage.close()
+                (c) -> sizeStage.close()
         );
 
         buttonBar.setButtonData(saveButton, ButtonBar.ButtonData.OK_DONE);

@@ -1,5 +1,6 @@
 package university.ua.embroideryproject;
 
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
@@ -27,9 +28,21 @@ public class WorkWithPictures {
         if (file != null) {
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(EmbroideryCanvas.writableImage, null), "png", file);
-                System.out.println("вишивку збережено");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Готово!");
+                alert.setHeaderText(null);
+                alert.setContentText("Вишивку збережено у ваших файлах.");
+                alert.showAndWait();
             } catch (Exception ex) {
-                System.err.println("помилка: " + ex.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Помилка!");
+                alert.setHeaderText(null);
+                alert.setContentText("Не вдалося зберегти");
+                alert.showAndWait();
+                Main.ROWS = 30;
+                Main.COLS = 30;
+                Main.CELL_SIZE = 23;
+                EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue());
             }
         }
     }
@@ -80,9 +93,10 @@ public class WorkWithPictures {
 
                 if (startCanvasX == -1) startCanvasX = 0;
 
+                Color borderColor = reader.getColor(0,0);
                 for (int x = startCanvasX + 1; x < loadedImage.getWidth(); x++) {
                     Color current = reader.getColor(x, 1);
-                    if(current.equals(Color.DARKGRAY)){
+                    if(current.equals(borderColor)){
                         Main.CELL_SIZE = x - startCanvasX+1;
                         break;
                     }
@@ -112,9 +126,21 @@ public class WorkWithPictures {
                     }
                 }
                 EmbroideryCanvas.printDownLoadPicture();
-                System.out.println("завантажено");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Готово!");
+                alert.setHeaderText(null);
+                alert.setContentText("Вишивку завантажено на полотно.");
+                alert.showAndWait();
             } catch (Exception ex) {
-                System.err.println("помилка" + ex.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Помилка!");
+                alert.setHeaderText(null);
+                alert.setContentText("Виберіть інше зображення.");
+                alert.showAndWait();
+                Main.ROWS = 30;
+                Main.COLS = 30;
+                Main.CELL_SIZE = 23;
+                EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue());
             }
         }
     }

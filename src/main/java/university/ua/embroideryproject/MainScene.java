@@ -19,6 +19,7 @@ public class MainScene {
     public static CheckBox vertical;
     public static Button duplicate;
     public static Button loadPicture;
+    public static ColorPicker colorForEmbroidery;
     public static ToggleButton eyedropper;
     public static Slider pencilSize;
     public static Button nullCanvas;
@@ -32,10 +33,12 @@ public class MainScene {
     public static Text getInstructionForSymetricV = new Text("малюнок симетрично осі У");
     public static Text getInstructionForSymetricH = new Text("малюнок симетрично осі Х");
     public static Text getInstructionForDuplicate = new Text("скопіювати поточний патерн, оберіть симетрію");
+    public static Button buttonForGridChange;
+    public static ColorPicker forGridChangePicker = new ColorPicker(Color.DARKGRAY);
 
     public static void mainSceneProperties(Stage stage, Group root2) {
         returnToMenuButton(stage, root2);
-        EmbroideryCanvas.drawEmbroideryCanvas();
+        EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue());
         savePictureButton( root2);
         colorForEmbroideryPicker( root2);
         resizeCanvasButton( root2);
@@ -47,6 +50,7 @@ public class MainScene {
         verticalSymetricCheckBox(root2);
         duplicatePatternButton(root2);
         loadPictureButton(root2);
+        forGridButton(root2);
         eyedropperButton(root2);
         pencilSizeSlider(root2);
         nullCanvasButton(root2);
@@ -65,14 +69,26 @@ public class MainScene {
 
     }
 
+
+    private static void forGridButton(Group root2) {
+        buttonForGridChange = new Button("КОЛІР СІТКИ");
+        buttonForGridChange.setPrefSize(280, 61);
+        buttonForGridChange.setLayoutX(1006);
+        buttonForGridChange.setLayoutY(395);
+        buttonStyle(buttonForGridChange, root2, 24);
+        buttonForGridChange.setOnAction(
+                (l) -> GridChangeColor.change()
+        );
+    }
+
     private static void nullCanvasButton(Group root2) {
             nullCanvas = new Button("ОЧИСТИТИ ПОЛОТНО");
-            nullCanvas.setPrefSize(280, 61);
-            nullCanvas.setLayoutX(1006);
-            nullCanvas.setLayoutY(300);
+            nullCanvas.setPrefSize(280, 40);
+            nullCanvas.setLayoutX(0);
+            nullCanvas.setLayoutY(680);
             buttonStyle(nullCanvas, root2, 17);
             nullCanvas.setOnAction(
-                    (l) -> EmbroideryCanvas.drawEmbroideryCanvas()
+                    (l) -> EmbroideryCanvas.drawEmbroideryCanvas(MainScene.forGridChangePicker.getValue())
             );
         }
 
@@ -219,8 +235,8 @@ public class MainScene {
     private static void resizeCanvasButton( Group root2) {
         resizeCanvas = new Button("РОЗМІР ПОЛОТНА");
         resizeCanvas.setPrefSize(280, 61);
-        resizeCanvas.setLayoutX(0);
-        resizeCanvas.setLayoutY(650);
+        resizeCanvas.setLayoutX(1006);
+        resizeCanvas.setLayoutY(325);
         buttonStyle(resizeCanvas, root2, 22);
         ResizeCanvas.width = new Label("Введіть кількість стовпчиків (1-100) :");
         ResizeCanvas.inputColumns = new TextField("30");
@@ -243,16 +259,29 @@ public class MainScene {
         textForColor.setY(80);
         root2.getChildren().add(textForColor);
 
-        Main.colorForEmbroidery = new ColorPicker(Color.DARKRED);
-        Main.colorForEmbroidery.setStyle("-fx-border-color:  #b52302;" +
-                "-fx-font-size: 24px; " +
+        MainScene.colorForEmbroidery = new ColorPicker(Color.DARKRED);
+        MainScene.colorForEmbroidery.setStyle("-fx-border-color:  #b52302;" +
+                "-fx-font-size: 18px; " +
                 "-fx-font-weight: bold;" +
                 "-fx-font-family: 'Georgia';"
         );
-        Main.colorForEmbroidery.setLayoutX(0);
-        Main.colorForEmbroidery.setLayoutY(100);
-        Main.colorForEmbroidery.setPrefSize(182, 68);
-        root2.getChildren().add(Main.colorForEmbroidery);
+        MainScene.colorForEmbroidery.setLayoutX(0);
+        MainScene.colorForEmbroidery.setLayoutY(100);
+        MainScene.colorForEmbroidery.setPrefSize(182, 68);
+        root2.getChildren().add(MainScene.colorForEmbroidery);
+
+        MainScene.colorForEmbroidery.setOnAction(event -> {
+            Color grid = MainScene.forGridChangePicker.getValue();
+            Color currentColor = MainScene.colorForEmbroidery.getValue();
+            if (currentColor.equals(grid)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Помилка");
+                alert.setHeaderText(null);
+                alert.setContentText("Ви обрали колір сітки, оберіть інший колір");
+                MainScene.colorForEmbroidery.setValue(Color.DARKRED);
+                alert.showAndWait();
+            }
+        });
     }
 
     private static void savePictureButton(Group root2) {
@@ -260,21 +289,18 @@ public class MainScene {
         savePicture.setPrefSize(280, 61);
         savePicture.setLayoutX(1006);
         savePicture.setLayoutY(100);
-        buttonStyle(savePicture, root2, 17);
+        buttonStyle(savePicture, root2, 20);
 
         savePicture.setOnAction(
                 (s) -> WorkWithPictures.saveAsPNG()
         );
-
-
-
     }
 
     private static void returnToMenuButton(Stage stage, Group root2) {
         returnToMenu = new Button("ДО МЕНЮ");
         returnToMenu.setPrefSize(280, 61);
         returnToMenu.setLayoutX(1006 );
-        returnToMenu.setLayoutY(500);
+        returnToMenu.setLayoutY(680);
         buttonStyle(returnToMenu, root2, 24);
 
         returnToMenu.setOnAction(

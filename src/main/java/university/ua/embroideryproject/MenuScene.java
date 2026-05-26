@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class MenuScene {
     public static Button create;
     public static Button symbols;
+    public static Button exit;
 
     public static void menuSceneProperties(Stage stage, Group root) {
         stage.setTitle("Embroidery Maker (Bobko Daria)");
@@ -85,6 +86,22 @@ public class MenuScene {
         symbols.setOnAction(
                 (m) -> WebsiteOpen.openHelpScene(stage));
 
+        exit = new Button("ВИХІД");
+        exit.setStyle(
+                "-fx-border-color:  #b52302;" +
+                        "-fx-text-fill:  #b52302;" +
+                        "-fx-font-size: 24px; " +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-family: 'Georgia';"
+        );
+
+        exit.setPrefSize(183, 61);
+        exit.setLayoutX(902);
+        exit.setLayoutY(630);
+        root.getChildren().add(exit);
+
+        exit.setOnAction(
+                (m) -> stage.close());
 
 
     }
